@@ -177,8 +177,8 @@ export default function EditContactForm(
         open={open}
         handleAction={() => deleteContact()}
         handleClose={() => setOpen(!open)}
-        title="Delete this contact?"
-        descriptor="Are you sure you want to delete this contact? This action cannot be undone."
+        title={`Delete ${firstName} ${lastName}'s contact?`}
+        descriptor={`Are you sure you want to delete ${firstName} ${lastName}'s contact? This action cannot be undone.`}
         agreeText="Yes, delete"
         disagreeText="Cancel"
       />
