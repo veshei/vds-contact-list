@@ -10,42 +10,27 @@ export default function HomeContactGrid(): JSX.Element {
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
+    justifyContent: 'center',
   }));
   const Row = styled(Box)<BoxProps>(({ theme }) => ({
     padding: '1rem',
     display: 'flex',
-    width: '100%',
-    [theme.breakpoints.down('sm')]: {
-      flex: '100%',
-      justifyContent: 'center',
-    },
-    [theme.breakpoints.up('sm')]: {
-      flex: '100%',
-      justifyContent: 'center',
-    },
-    [theme.breakpoints.up('md')]: {
-      flex: '50%',
-      justifyContent: 'flex-start',
-    },
-    [theme.breakpoints.up('lg')]: {
-      flex: '33%',
-      justifyContent: 'flex-start',
-    },
   }));
   return (
     <Column>
-      {contactList.map((contact, index) => (
-        <Row>
-          <ContactCard
-            key={index}
-            id={contact.id}
-            firstName={contact.firstName}
-            lastName={contact.lastName}
-            phoneNumber={contact.phoneNumber}
-            emailAddress={contact.email}
-          />
-        </Row>
-      ))}
+      {contactList &&
+        contactList.map((contact, index) => (
+          <Row>
+            <ContactCard
+              key={index}
+              id={contact.id}
+              firstName={contact.firstName}
+              lastName={contact.lastName}
+              phoneNumber={contact.phoneNumber}
+              emailAddress={contact.email}
+            />
+          </Row>
+        ))}
     </Column>
   );
 }

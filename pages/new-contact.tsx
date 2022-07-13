@@ -3,9 +3,9 @@ import Head from 'next/head';
 
 import Wrapper from '../components/wrapper';
 import MasterGrid from '../components/grid';
-import EditContactForm from '../sections/edit-contact/edit-contact-form';
 import { useRouter } from 'next/router';
 import NavBar from '../components/nav-bar';
+import NewContactForm from '../sections/new-contact/new-contact-form';
 
 export default function EditContactPage(): JSX.Element {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function EditContactPage(): JSX.Element {
   return (
     <Wrapper>
       <Head>
-        <title>Contact List | Edit Contact</title>
+        <title>Contact List | Create New Contact</title>
       </Head>
       <NavBar />
       <MasterGrid
@@ -22,8 +22,8 @@ export default function EditContactPage(): JSX.Element {
           flexDirection: 'column',
         }}
       >
-        <Typography variant="h1">Edit Contact</Typography>
-        <EditContactForm id={id as string} />
+        <Typography variant="h1">Create New Contact</Typography>
+        <NewContactForm />
       </MasterGrid>
     </Wrapper>
   );
