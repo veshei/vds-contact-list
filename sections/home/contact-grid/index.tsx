@@ -1,8 +1,10 @@
 import { Box, BoxProps, styled, Typography } from '@mui/material';
 
-import { ContactList } from '../../../public/mock-data';
 import ContactCard from '../../../components/contact-card';
+import { useContactListContext } from '../../../components/contact-list-provider';
 export default function HomeContactGrid(): JSX.Element {
+  const contactContext = useContactListContext();
+  const { contactList } = contactContext;
   const Column = styled(Box)<BoxProps>(({ theme }) => ({
     display: 'flex',
     flexDirection: 'row',
@@ -32,7 +34,7 @@ export default function HomeContactGrid(): JSX.Element {
   }));
   return (
     <Column>
-      {ContactList.map((contact, index) => (
+      {contactList.map((contact, index) => (
         <Row>
           <ContactCard
             key={index}
