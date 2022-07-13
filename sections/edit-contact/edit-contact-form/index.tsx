@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import _ from 'underscore';
 
 import { useContactListContext } from '../../../components/contact-list-provider';
+import AlertDialog from '../../../components/dialog';
 
 interface EditContactFormProps {
   id: string;
@@ -18,6 +19,7 @@ export default function EditContactForm(
   const [lastName, setLastName] = useState<string>();
   const [phoneNumber, setPhoneNumber] = useState<string>();
   const [email, setEmail] = useState<string>();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -58,6 +60,11 @@ export default function EditContactForm(
       email,
     };
     contacts = insert(contacts, contactIndex, contact);
+    updateContactList(contacts);
+    router.push('/');
+  };
+  const deleteContact = () => {
+    const contacts = contactList.filter((c) => c.id.toString() !== id);
     updateContactList(contacts);
     router.push('/');
   };
@@ -111,6 +118,14 @@ export default function EditContactForm(
         Save
       </Button>
       <Button
+        sx={{ mt: 2.5, mr: 1 }}
+        variant="contained"
+        color="warning"
+        onClick={() => setOpen(true)}
+      >
+        Delete
+      </Button>
+      <Button
         sx={{ mt: 2.5 }}
         variant="outlined"
         color="secondary"
@@ -118,6 +133,15 @@ export default function EditContactForm(
       >
         Cancel
       </Button>
+      <AlertDialog
+        open={open}
+        handleAction={() => deleteContact()}
+        handleClose={() => setOpen(!open)}
+        title="Delete this contact?"
+        descriptor="Are you sure you want to delete this contact? This action cannot be undone."
+        agreeText="Yes, delete"
+        disagreeText="Cancel"
+      />
     </Box>
   );
 }
