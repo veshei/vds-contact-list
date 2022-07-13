@@ -4,19 +4,41 @@ import {
   CardContent,
   Typography,
   Button,
+  IconButton,
+  IconButtonProps,
+  styled,
 } from '@mui/material';
 import React from 'react';
 import { useState } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useRouter } from 'next/router';
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 interface ContactCardProps {
+  id: number;
   firstName: string;
   lastName: string;
   phoneNumber: number;
   emailAddress: string;
 }
 export default function ContactCard(props: ContactCardProps): JSX.Element {
-  const { firstName, lastName, phoneNumber, emailAddress } = props;
+  const { id, firstName, lastName, phoneNumber, emailAddress } = props;
   const [showAll, setShowAll] = useState(false);
+  const router = useRouter();
   const formatPhone = (phone: string) => {
     const formattedPhone =
       '(' +
@@ -59,10 +81,28 @@ export default function ContactCard(props: ContactCardProps): JSX.Element {
           </React.Fragment>
         )}
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => onClickButton()}>
-          {showAll ? 'Collapse' : 'Expand'}
+      <CardActions disableSpacing>
+        <Button
+          size="small"
+          onClick={() =>
+            router.push({
+              pathname: 'edit-contact',
+              query: {
+                id: id,
+              },
+            })
+          }
+        >
+          Edit Contact
         </Button>
+        <ExpandMore
+          expand={showAll}
+          onClick={() => onClickButton()}
+          aria-expanded={showAll}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
       </CardActions>
     </Card>
   );

@@ -38,6 +38,7 @@ export default function HomeContactGrid(): JSX.Element {
         <Row>
           <ContactCard
             key={index}
+            id={contact.id}
             firstName={contact.firstName}
             lastName={contact.lastName}
             phoneNumber={contact.phoneNumber}

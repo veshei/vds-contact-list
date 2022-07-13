@@ -1,14 +1,24 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { ContactList } from '../../public/mock-data';
 
 const ContactListContext = createContext({
   contactList: ContactList,
-  updateContactList: () => {},
+  updateContactList: (contacts) => {},
 });
 
-export function ContactListProvider({ value, children }) {
+export function ContactListProvider({ children }) {
+  const [contactList, setContactList] = useState(ContactList);
+
+  const updateContactList = (contacts) => {
+    setContactList(contacts);
+  };
+
+  const context = {
+    contactList: contactList,
+    updateContactList: updateContactList,
+  };
   return (
-    <ContactListContext.Provider value={value}>
+    <ContactListContext.Provider value={context}>
       {children}
     </ContactListContext.Provider>
   );

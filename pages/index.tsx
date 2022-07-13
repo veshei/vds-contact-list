@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import StyledGrid from '../components/grid';
+import MasterGrid from '../components/grid';
 import NavBar from '../components/nav-bar';
 import Wrapper from '../components/wrapper';
 import Head from 'next/head';
@@ -10,10 +10,10 @@ export default function Home(): JSX.Element {
   return (
     <Wrapper>
       <Head>
-        <title>VDS Contact List</title>
+        <title>Contact List | Home</title>
       </Head>
       <NavBar />
-      <StyledGrid
+      <MasterGrid
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -21,7 +21,7 @@ export default function Home(): JSX.Element {
       >
         <Typography variant="h1">Contact List</Typography>
         <HomeContactGrid />
-      </StyledGrid>
+      </MasterGrid>
     </Wrapper>
   );
 }
