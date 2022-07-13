@@ -10,7 +10,12 @@ export default function HomeContactGrid(): JSX.Element {
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
-    justifyContent: 'center',
+    [theme.breakpoints.down(1152)]: {
+      justifyContent: 'center',
+    },
+    [theme.breakpoints.up(1152)]: {
+      justifyContent: 'flex-start',
+    },
   }));
   const Row = styled(Box)<BoxProps>(({ theme }) => ({
     padding: '1rem',

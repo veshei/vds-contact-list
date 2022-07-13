@@ -16,9 +16,15 @@ export default function EditContactForm(
   const { contactList, updateContactList } = useContactListContext();
   const router = useRouter();
   const [firstName, setFirstName] = useState<string>();
+  const [firstNameError, setFirstNameError] = useState(false);
   const [lastName, setLastName] = useState<string>();
+  const [lastNameError, setLastNameError] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState<string>();
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [phoneNumberHelperText, setPhoneNumberHelperText] = useState('');
   const [email, setEmail] = useState<string>();
+  const [emailError, setEmailError] = useState(false);
+  const [emailHelperText, setEmailHelperText] = useState('');
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -31,16 +37,40 @@ export default function EditContactForm(
     }
   }, [id]);
   const updateFirstName = (event) => {
-    _.debounce(setFirstName(event.target.value), 300);
+    setFirstName(event.target.value);
+    setFirstNameError(event.target.value === '');
   };
   const updateLastName = (event) => {
-    _.debounce(setLastName(event.target.value), 300);
+    setLastName(event.target.value);
+    setLastNameError(event.target.value === '');
   };
   const updatePhoneNumber = (event) => {
-    _.debounce(setPhoneNumber(event.target.value), 300);
+    setPhoneNumber(event.target.value);
+    if (event.target.value === '') {
+      setPhoneNumberError(true);
+      setPhoneNumberHelperText('Phone number cannot be empty');
+    } else if (!/^\d+$/.test(event.target.value)) {
+      setPhoneNumberError(true);
+      setPhoneNumberHelperText('Invalid input, please enter a number');
+    } else {
+      setPhoneNumberError(false);
+      setPhoneNumberHelperText('');
+    }
   };
   const updateEmailAddress = (event) => {
-    _.debounce(setEmail(event.target.value), 300);
+    setEmail(event.target.value);
+    const emailRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if (event.target.value === '') {
+      setEmailError(true);
+      setEmailHelperText('Email address cannot be empty');
+    } else if (!emailRegex.test(event.target.value)) {
+      setEmailError(true);
+      setEmailHelperText('Invalid input, please enter a valid email');
+    } else {
+      setEmailError(false);
+      setEmailHelperText('');
+    }
   };
 
   const insert = (arr, index, ...newItems) => [
@@ -50,18 +80,20 @@ export default function EditContactForm(
   ];
 
   const saveContactInfo = () => {
-    let contacts = contactList.filter((c) => c.id.toString() !== id);
-    const contactIndex = contactList.findIndex((c) => c.id.toString() === id);
-    const contact = {
-      id: parseInt(id),
-      firstName,
-      lastName,
-      phoneNumber: parseInt(phoneNumber),
-      email,
-    };
-    contacts = insert(contacts, contactIndex, contact);
-    updateContactList(contacts);
-    router.push('/');
+    if (!firstNameError && !lastNameError && !phoneNumberError && !emailError) {
+      let contacts = contactList.filter((c) => c.id.toString() !== id);
+      const contactIndex = contactList.findIndex((c) => c.id.toString() === id);
+      const contact = {
+        id: parseInt(id),
+        firstName,
+        lastName,
+        phoneNumber: parseInt(phoneNumber),
+        email,
+      };
+      contacts = insert(contacts, contactIndex, contact);
+      updateContactList(contacts);
+      router.push('/');
+    }
   };
   const deleteContact = () => {
     const contacts = contactList.filter((c) => c.id.toString() !== id);
@@ -83,14 +115,18 @@ export default function EditContactForm(
           id="outlined-required"
           label="First Name"
           value={firstName}
-          onChange={(event) => updateFirstName(event)}
+          onChange={(event) => _.debounce(updateFirstName(event), 300)}
+          error={firstNameError}
+          helperText={firstNameError && 'First name cannot be empty'}
         />
         <TextField
           required
           id="outlined-required"
           label="Last Name"
           value={lastName}
-          onChange={(event) => updateLastName(event)}
+          onChange={(event) => _.debounce(updateLastName(event), 300)}
+          error={lastNameError}
+          helperText={lastNameError && 'Last name cannot be empty'}
         />
       </Box>
       <Box display="flex">
@@ -99,14 +135,18 @@ export default function EditContactForm(
           id="outlined-required"
           label="Phone Number"
           value={phoneNumber}
-          onChange={(event) => updatePhoneNumber(event)}
+          onChange={(event) => _.debounce(updatePhoneNumber(event), 300)}
+          error={phoneNumberError}
+          helperText={phoneNumberHelperText}
         />
         <TextField
           required
           id="outlined-required"
           label="Email Address"
           value={email}
-          onChange={(event) => updateEmailAddress(event)}
+          onChange={(event) => _.debounce(updateEmailAddress(event), 300)}
+          error={emailError}
+          helperText={emailHelperText}
         />
       </Box>
       <Button

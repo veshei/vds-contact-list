@@ -7,6 +7,7 @@ import {
   IconButton,
   IconButtonProps,
   styled,
+  useTheme,
 } from '@mui/material';
 import React from 'react';
 import { useState } from 'react';
@@ -39,6 +40,7 @@ export default function ContactCard(props: ContactCardProps): JSX.Element {
   const { id, firstName, lastName, phoneNumber, emailAddress } = props;
   const [showAll, setShowAll] = useState(false);
   const router = useRouter();
+  const theme = useTheme();
   const formatPhone = (phone: string) => {
     const formattedPhone =
       '(' +
@@ -55,7 +57,18 @@ export default function ContactCard(props: ContactCardProps): JSX.Element {
     setShowAll(!showAll);
   };
   return (
-    <Card sx={{ minWidth: 275, width: 275, margin: 1.5 }}>
+    <Card
+      sx={{
+        margin: 1.5,
+        [theme.breakpoints.down(400)]: {
+          width: '100%',
+        },
+        [theme.breakpoints.up(400)]: {
+          width: 275,
+          minWidth: 275,
+        },
+      }}
+    >
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Name

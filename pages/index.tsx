@@ -45,6 +45,11 @@ export default function Home(): JSX.Element {
             size="large"
             endIcon={<AddIcon />}
             onClick={() => router.push('/new-contact')}
+            sx={{
+              [theme.breakpoints.down('md')]: {
+                marginTop: '0.5rem',
+              },
+            }}
           >
             Create Contact
           </Button>
